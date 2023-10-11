@@ -8,6 +8,9 @@ import 'package:ui_one/service._locator.dart';
 
 import '../components/buttons.dart';
 
+import '../../../../services/auth_service.dart';
+import 'package:provider/provider.dart';
+
 class SignInPage extends StatefulWidget {
   static const String id = "sign_in_page";
 
@@ -25,6 +28,7 @@ class _SignInPageState extends State<SignInPage> {
 
   @override
   Widget build(BuildContext context) {
+    //var authService = Provider.of<AuthService>(context);
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Padding(
@@ -76,7 +80,7 @@ class _SignInPageState extends State<SignInPage> {
                     controller: emailController,
                     validator: AuthValidator.isEmailValid,
                     decoration:
-                        const InputDecoration(hintText: "email address"),
+                        const InputDecoration(hintText: "username"),
                   ),
                   const SizedBox(height: 30),
                   TextFormField(
@@ -104,7 +108,17 @@ class _SignInPageState extends State<SignInPage> {
             const SizedBox(height: 100),
             Column(
               children: [
-                MyButtonTwo(text: "Log in", onPressed: signIn),
+                MyButtonTwo(text: "Log in", onPressed: () async {
+                  AuthService authService = AuthService();
+                  final loginOk = await authService.login(emailController.text.trim(), passwordController.text.trim());
+                  if(loginOk){
+                    AppWidget.isLogin = true;
+                    AppWidget.loggedUser["email"] = emailController.text.trim();
+                    AppWidget.loggedUser["password"] = passwordController.text.trim();
+                    Navigator.pushNamed(context, MyApp.id);
+                  }                  
+                  print(loginOk);
+                }),
                 const SizedBox(height: 30),
                 const Text(
                   "Forgot Password",

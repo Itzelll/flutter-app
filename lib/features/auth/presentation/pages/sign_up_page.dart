@@ -3,6 +3,9 @@ import 'package:ui_one/features/auth/presentation/components/buttons.dart';
 import 'package:ui_one/features/auth/presentation/validator/auth_validator.dart';
 import 'package:ui_one/service._locator.dart';
 
+import '../../../../services/auth_service.dart';
+import 'package:provider/provider.dart';
+
 class SignUpPage extends StatefulWidget {
   static const String id = "sign_up_page";
 
@@ -135,6 +138,13 @@ class _SignUpPageState extends State<SignUpPage> {
         emailController.text.trim(),
         passwordController.text.trim(),
       );
+      AuthService authService = AuthService();
+      final newuser = authService.register(
+        emailController.text.trim(),
+        nameController.text.trim(),
+        passwordController.text.trim(),
+      );
+      
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(message["message"] as String),
