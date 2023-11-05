@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:ui_one/features/auth/presentation/pages/retrain.dart';
+
 class ModelPage extends StatefulWidget {
   static const String id = "Model_Page";
   const ModelPage({super.key});
@@ -19,8 +21,8 @@ class _ModelPageState extends State<ModelPage> {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
 
-      final url =
-          Uri.parse('https://breast-cancer-service-itzelll.cloud.okteto.net/diagnosis');
+      final url = Uri.parse(
+          'https://breast-cancer-service-itzelll.cloud.okteto.net/diagnosis');
       final response = await http.post(url,
           body: json.encode({
             "mean_radius": mean_radius,
@@ -36,7 +38,7 @@ class _ModelPageState extends State<ModelPage> {
         print(jsonResponse);
         double? diagnosis = jsonResponse['diagnosis'];
         setState(() {
-          _respuesta = 'Diagnosis: ${diagnosis?.toStringAsFixed(2)}';
+          _respuesta = 'Diagnosis: ${diagnosis?.toStringAsFixed(3)}';
         });
       } else {
         setState(() {
@@ -201,10 +203,9 @@ class _ModelPageState extends State<ModelPage> {
                   ),
                   style: ElevatedButton.styleFrom(
                     primary: const Color.fromARGB(255, 14, 12, 10),
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 125, vertical: 22),
+                    padding: EdgeInsets.symmetric(horizontal: 65, vertical: 22),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(0),
+                      borderRadius: BorderRadius.circular(30),
                     ),
                   ),
                 ),
@@ -213,14 +214,35 @@ class _ModelPageState extends State<ModelPage> {
                       vertical: 16.0, horizontal: 16.0),
                   padding: const EdgeInsets.all(16.0),
                   decoration: BoxDecoration(
-                    color: const Color.fromARGB(255, 10, 9, 8),
-                    borderRadius: BorderRadius.circular(8.0),
+                    color: Color.fromARGB(255, 65, 112, 194),
+                    borderRadius: BorderRadius.circular(30),
                   ),
                   child: Text(
                     _respuesta,
                     style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                    ),
+                  ),
+                ),
+
+                ElevatedButton(
+                  onPressed: () {
+                    // Navegar a la pantalla "retrain.dart"
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => Reentreno()));
+                  },
+                  child: Text(
+                    'Reentrenar modelo',
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    primary: Color.fromARGB(255, 45, 16, 133),
+                    padding: EdgeInsets.symmetric(horizontal: 65, vertical: 22),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
                     ),
                   ),
                 ),
